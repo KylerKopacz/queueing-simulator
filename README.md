@@ -7,5 +7,7 @@ The code and write-up for this project was written by Kyler Kopacz (Amherst Clas
 How does job size variability affect mean response time in a single-server queueing system?
 
 ## TODO List:
-- [] - Create a Queue Data Structure
-- [] - Create timing scheme for event drive queue
+- [] - Create Exponential Distribution that creates whole numbers
+- [] - Create Hyperexponentail Distribution that creates whole numbers
+- [] - 
+

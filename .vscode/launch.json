@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - ExponentialTest",
+            "request": "launch",
+            "mainClass": "ExponentialTest",
+            "projectName": "queueing-simulator_7eb360e9"
+        }
+    ]
+}

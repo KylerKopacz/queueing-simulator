@@ -8,6 +8,7 @@ public class SimQueue {
     int jobCount; /* count of the number of jobs that have arrived */
     Queue<Integer> queue;
     Exponential exp;
+    Hyperexponential hexp;
     boolean hasJob;
 
     
@@ -18,6 +19,7 @@ public class SimQueue {
         queue = new LinkedList<Integer>();
         exp = new Exponential(0.5);
         hasJob = false;
+        hexp = new Hyperexponential(.5, .5, .5);
     }
 
     public int getNextArrivalTime() {
@@ -25,5 +27,14 @@ public class SimQueue {
     }
 
     public int getNextDepartureTime() {
+        if(!hasJob) {
+            return time + queue.peek();
+        } else {
+            return nextDepartureTime;
+        }
+    }
+
+    public int generateJob() {
+        return hexp.next();
     }
 }

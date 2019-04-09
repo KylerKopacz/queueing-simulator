@@ -7,7 +7,10 @@ The code and write-up for this project was written by Kyler Kopacz (Amherst Clas
 How does job size variability affect mean response time in a single-server queueing system?
 
 ## TODO List:
-- [] - Create Exponential Distribution that creates whole numbers
-- [] - Create Hyperexponentail Distribution that creates whole numbers
-- [] - 
+- [X] - Create Exponential Distribution that creates whole numbers
+- [X] - Create Hyperexponentail Distribution that creates whole numbers
+- [] - Create the calculation for E[X], E[X^2], and Var[X]
+- [] - Create the actual simulation
+- [] - After the simulation is finished, modify to make it 2 server
+
 

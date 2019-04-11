@@ -7,6 +7,6 @@ public class Exponential {
     }
 
     public int next() {
-        return (int)((-1.0)*(1.0/lambda)* Math.log(1-Math.random()));
+        return (int)((-1.0)*(1.0/lambda)* Math.log(1-Math.random())+1);
     }
 }

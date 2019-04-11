@@ -17,10 +17,10 @@ public class Hyperexponential {
       // generate the next instance of a Hyperexponential, using the Inverse transform method on an Exponential distibution with either lamdaOne or lamdaTwo as the parameters
        // formula x = -(1/lamda)(ln(1- (# from uniform 1-0)))
       if(rand.nextDouble() < p){ //go with exp distro 1
-        return (int)((-1.0)*(1.0/lOne)* Math.log(1-rand.nextDouble()));
+        return (int)((-1.0)*(1.0/lOne)* Math.log(1-rand.nextDouble())+1);
       }
       else{ // go with exp distro 2
-        return (int)((-1.0)*(1.0/lTwo)* Math.log(1-rand.nextDouble()));
+        return (int)((-1.0)*(1.0/lTwo)* Math.log(1-rand.nextDouble())+1);
       }
     }
 }

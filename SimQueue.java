@@ -55,22 +55,23 @@ public class SimQueue {
     return queue.size();
   }
   
-  public double runSimulation(int numJobs) {
-    int n = numJobs;// number of jobs
+  public int runSimulation() {
+    int n = 0;// number of jobs
     ArrayList<Integer> snapshots = new ArrayList<Integer>();
     
-    while (n>0) {
+    while (n < 10000000) {
       
-      System.out.println("Ariv: " + this.nextArrivalTime  + " Dep: " + this.nextDepartureTime + " Time: " + this.time);
+      //System.out.println("Ariv: " + this.nextArrivalTime  + " Dep: " + this.nextDepartureTime + " Time: " + this.time);
 
-      snapshots.add(queue.size());     
+      if(n > 100000)
+        snapshots.add(queue.size());     
       
       // if the queue is empty, or the next arrival time is first
       if(this.nextArrivalTime < this.nextDepartureTime || !this.hasJob){
         this.time = this.nextArrivalTime; // advance system time to next arrival
         this.generateJob();
         this.nextArrivalTime = this.getNextArrivalTime(); // set new arrival time
-        n--;
+        n++;
       }
       // if the queue is non-empty and a departure is sooner.
       else{
@@ -80,19 +81,19 @@ public class SimQueue {
         if(this.time == this.nextArrivalTime){
           this.generateJob();
           this.nextArrivalTime= this.getNextArrivalTime();
-          n--;
+          n++;
         }
       }
     }
-    System.out.println("Jobs In Service after n steps: " + this.getJobsInService());
+    //System.out.println("Jobs In Service after n steps: " + this.getJobsInService());
 
     //calculate the average number of jobs in the queue
     int sum = 0;
     for(Integer i: snapshots) {
       sum += i;
     }
-    double averageJobs = sum/snapshots.size();
-    System.out.println("The average number of jobs in the queue was: " + averageJobs);
+    int averageJobs = (int)sum/snapshots.size();
+    //System.out.println("The average number of jobs in the queue was: " + averageJobs);
     
     return averageJobs;
   }

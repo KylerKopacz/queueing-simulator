@@ -3,7 +3,10 @@ public class QueueSimulator {
     public static void main(String[] args) {
         SimQueue sim = new SimQueue(0.5, 0.5, 0.5, 0.5); 
         TwoServerSimQueue twoSim = new TwoServerSimQueue(.5, .5, .5, .5);                         
-        sim.runSimulation(10000);
-        twoSim.runSimulation(10000);
+        double averageForOne = sim.runSimulation();
+        double averageForTwo = twoSim.runSimulation();
+
+        System.out.println("Average Number in Test One: " + averageForOne);
+        System.out.println("Average Number in Test Two: " + averageForTwo);
     }
 }

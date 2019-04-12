@@ -72,40 +72,42 @@ public class TwoServerSimQueue{
     return queueOne.size() + queueTwo.size();
   }
   
-  public double runSimulation(int numJobs){
-    int n = numJobs;
+  public int runSimulation(){
     ArrayList<Integer> snapshots = new ArrayList<Integer>();
+    int n = 0;
     
-    while(n > 0){
+    //kick off the simulation
+    generateJob();
+    nextArrivalTime = time + exp.next();
+    n++;
+    
+    while(n < 10000000){
       
-      snapshots.add(getJobsInService());
+      if(n > 100000)
+        snapshots.add(getJobsInService());
 
-      System.out.println(" Time: " + this.time + " Ariv: " + this.nextArrivalTime  + " Departure One: " + this.nextDepartureTimeOne  + " Departure Two: " + this.nextDepartureTimeTwo);
+      //System.out.println(" Time: " + this.time + " Ariv: " + this.nextArrivalTime  + " Departure One: " + this.nextDepartureTimeOne  + " Departure Two: " + this.nextDepartureTimeTwo);
       
-      if(n == numJobs) {
-        generateJob();
-        nextArrivalTime = time + exp.next();
-        n--;
-      } else if((nextArrivalTime < nextDepartureTimeOne || nextArrivalTime < nextDepartureTimeTwo)) {
+      if((nextArrivalTime < nextDepartureTimeOne || nextArrivalTime < nextDepartureTimeTwo)) {
         time = nextArrivalTime;
         generateJob();
         nextArrivalTime += exp.next();
-        n--;
+        n++;
       } else if(nextArrivalTime == nextDepartureTimeOne || nextArrivalTime == nextDepartureTimeTwo) {
         time = nextArrivalTime;
         if(nextDepartureTimeOne == nextDepartureTimeTwo) {
           finishJobOne();
           finishJobTwo();
           generateJob();
-          n--;
+          n++;
         } else if(nextArrivalTime == nextDepartureTimeOne) {
           finishJobOne();
           generateJob();
-          n--;
+          n++;
         } else {
           finishJobTwo();
           generateJob();
-          n--;
+          n++;
         }
         nextArrivalTime += exp.next();
       } else if(nextDepartureTimeOne != 0 && nextDepartureTimeTwo == 0) {
@@ -131,7 +133,7 @@ public class TwoServerSimQueue{
         time = nextArrivalTime;
         generateJob();
         nextArrivalTime += exp.next();
-        n--;
+        n++;
       }
     }
 
@@ -139,9 +141,9 @@ public class TwoServerSimQueue{
     for(Integer i: snapshots) {
       sum += i;
     }
-    double averageJobs = sum/snapshots.size();
+    int averageJobs = (int)sum/snapshots.size();
 
-    System.out.println("The average number of jobs in the queue was: " + averageJobs);
+    //System.out.println("The average number of jobs in the queue was: " + averageJobs);
     
     return averageJobs;
   }

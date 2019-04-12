@@ -16,9 +16,9 @@ public class TwoServerSimQueue{
   boolean hasJobOne;
   boolean hasJobTwo;
   Random rand;
-
-
-
+  
+  
+  
   public TwoServerSimQueue(double hexpLambdaOne, double hexpLambdaTwo, double hexpP, double expLambda) {
     time = 0;
     nextArrivalTime = 0;
@@ -30,67 +30,119 @@ public class TwoServerSimQueue{
     hasJobOne = false;
     hasJobTwo = false;
     hexp = new Hyperexponential(hexpLambdaOne, hexpLambdaTwo, hexpP);
-    rand=new Random();
+    rand = new Random();
   }
-
-
-
+  
+  
+  
   public void generateJob(){
+    int job = hexp.next();
     if(rand.nextBoolean()){
-      queueOne.add(hexp.next());
-      hasJobOne=true;
-      if(queueOne.size() == 1) nextDepartureTimeOne= time+ queueOne.peek();
-    }
-    else{
-      queueTwo.add(hexp.next());
+      queueOne.add(job);
+      hasJobOne = true;
+      if(queueOne.size() == 1) nextDepartureTimeOne = time + queueOne.peek();
+    } else {
+      queueTwo.add(job);
       hasJobTwo=true;
-      if(queueTwo.size() == 1) nextDepartureTimeTwo= time+ queueTwo.peek();
+      if(queueTwo.size() == 1) nextDepartureTimeTwo= time + queueTwo.peek();
     }
   }
+  
   public void finishJobOne(){
     queueOne.poll();
-    if(queueOne.isEmpty()) hasJobOne =false;
-    else nextDepartureTimeOne = time + queueOne.peek();
+    if(queueOne.isEmpty()) {
+      hasJobOne = false;
+      nextDepartureTimeOne = 0;
+    } else {
+      nextDepartureTimeOne = time + queueOne.peek();
+    }
   }
+  
   public void finishJobTwo(){
     queueTwo.poll();
-    if(queueTwo.isEmpty()) hasJobTwo=false;
-    else nextDepartureTimeTwo= time + queueTwo.peek();
+    if(queueTwo.isEmpty()) {
+      hasJobTwo = false;
+      nextDepartureTimeTwo = 0;
+    } else {
+      nextDepartureTimeTwo = time + queueTwo.peek();
+    } 
   }
+
   public int getJobsInService(){
     return queueOne.size() + queueTwo.size();
   }
-
-
-  public double runSimulation(int n){
+  
+  public double runSimulation(int numJobs){
+    int n = numJobs;
     ArrayList<Integer> snapshots = new ArrayList<Integer>();
-
-    while(n>0){
-
+    
+    while(n > 0){
+      
       snapshots.add(getJobsInService());
 
-      if((nextArrivalTime < nextDepartureTimeOne && nextArrivalTime < nextDepartureTimeTwo)|| (!hasJobOne && !hasJobTwo)){
+      System.out.println(" Time: " + this.time + " Ariv: " + this.nextArrivalTime  + " Departure One: " + this.nextDepartureTimeOne  + " Departure Two: " + this.nextDepartureTimeTwo);
+      
+      if(n == numJobs) {
+        generateJob();
+        nextArrivalTime = time + exp.next();
+        n--;
+      } else if((nextArrivalTime < nextDepartureTimeOne || nextArrivalTime < nextDepartureTimeTwo)) {
         time = nextArrivalTime;
         generateJob();
-        nextArrivalTime+= exp.next();
-      }
-      else if(nextDepartureTimeOne<nextDepartureTimeTwo){
-        if(hasJobOne){
+        nextArrivalTime += exp.next();
+        n--;
+      } else if(nextArrivalTime == nextDepartureTimeOne || nextArrivalTime == nextDepartureTimeTwo) {
+        time = nextArrivalTime;
+        if(nextDepartureTimeOne == nextDepartureTimeTwo) {
+          finishJobOne();
+          finishJobTwo();
+          generateJob();
+          n--;
+        } else if(nextArrivalTime == nextDepartureTimeOne) {
+          finishJobOne();
+          generateJob();
+          n--;
+        } else {
+          finishJobTwo();
+          generateJob();
+          n--;
+        }
+        nextArrivalTime += exp.next();
+      } else if(nextDepartureTimeOne != 0 && nextDepartureTimeTwo == 0) {
+        time = nextDepartureTimeOne;
+        finishJobOne();
+      } else if(nextDepartureTimeOne == 0 && nextDepartureTimeTwo != 0) {
+        time = nextDepartureTimeTwo;
+        finishJobTwo();
+      } else if(nextDepartureTimeOne != 0 && nextDepartureTimeTwo != 0) {
+        if(nextDepartureTimeOne < nextDepartureTimeTwo) {
           time = nextDepartureTimeOne;
           finishJobOne();
         }
-      }
-      else if(hasJobTwo){
-        time=nextDepartureTimeTwo;
-        finishJobTwo();
+        if(nextDepartureTimeOne > nextDepartureTimeTwo) {
+          time = nextDepartureTimeTwo;
+          finishJobTwo();
+        }
+        if(nextDepartureTimeOne == nextDepartureTimeTwo) {
+          finishJobOne();
+          finishJobTwo();
+        }
+      } else if(nextDepartureTimeOne == 0 && nextDepartureTimeTwo == 0) {
+        time = nextArrivalTime;
+        generateJob();
+        nextArrivalTime += exp.next();
+        n--;
       }
     }
+
     int sum = 0;
     for(Integer i: snapshots) {
       sum += i;
     }
     double averageJobs = sum/snapshots.size();
 
+    System.out.println("The average number of jobs in the queue was: " + averageJobs);
+    
     return averageJobs;
   }
 }

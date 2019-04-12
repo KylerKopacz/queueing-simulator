@@ -10,7 +10,7 @@ How does job size variability affect mean response time in a single-server queue
 - [X] - Create Exponential Distribution that creates whole numbers
 - [X] - Create Hyperexponentail Distribution that creates whole numbers
 - [] - Create the calculation for E[X], E[X^2], and Var[X]
-- [] - Create the actual simulation
-- [] - After the simulation is finished, modify to make it 2 server
+- [X] - Create the actual simulation
+- [X] - After the simulation is finished, modify to make it 2 server
 
 

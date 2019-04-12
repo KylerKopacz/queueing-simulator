@@ -69,7 +69,7 @@ public class SimQueue {
       if(this.nextArrivalTime < this.nextDepartureTime || !this.hasJob){
         this.time = this.nextArrivalTime; // advance system time to next arrival
         this.generateJob();
-        this.nextArrivalTime= this.getNextArrivalTime(); // set new arrival time
+        this.nextArrivalTime = this.getNextArrivalTime(); // set new arrival time
         n--;
       }
       // if the queue is non-empty and a departure is sooner.

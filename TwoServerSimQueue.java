@@ -3,7 +3,11 @@ import java.util.Queue;
 import java.util.ArrayList;
 import java.util.Random;
 
-
+/**
+ * A Class representing a Queueing System with Two Servers (M/H^2/2)
+ * @author Kyler Kopacz
+ * @author https://github.com/KylerKopacz/queueing-server
+ */
 public class TwoServerSimQueue{
   int time; /* time-stamp for the current state of the queue */
   int nextArrivalTime; /* Arrival time is the time that the job enters service */
@@ -18,7 +22,13 @@ public class TwoServerSimQueue{
   Random rand;
   
   
-  
+  /**
+   * Constructor for the Two Server System
+   * @param hexpLambdaOne Rate for first exponential in hyperexponential
+   * @param hexpLambdaTwo Rate for second exponential in hyperexponential
+   * @param hexpP The probability for the hyperexponential
+   * @param expLambda The inter-arrival rate of jobs
+   */
   public TwoServerSimQueue(double hexpLambdaOne, double hexpLambdaTwo, double hexpP, double expLambda) {
     time = 0;
     nextArrivalTime = 0;
@@ -33,8 +43,10 @@ public class TwoServerSimQueue{
     rand = new Random();
   }
   
-  
-  
+  /**
+   * Generates a job and places it in the system. It will either pick a random server to place it on (coinflip), or the queue with the least amount of jobs, depending on the boolean passed in. 
+   * @param coinFlip Whether or not to do a coinflip for sending the job to a server
+   */
   public void generateJob(boolean coinFlip){
     int job = hexp.next();
     if(coinFlip) {
@@ -75,6 +87,9 @@ public class TwoServerSimQueue{
     
   }
   
+  /**
+   * Finishes the job on server one
+   */
   public void finishJobOne(){
     queueOne.poll();
     if(queueOne.isEmpty()) {
@@ -85,6 +100,9 @@ public class TwoServerSimQueue{
     }
   }
   
+  /**
+   * Finishes the job on server two
+   */
   public void finishJobTwo(){
     queueTwo.poll();
     if(queueTwo.isEmpty()) {
@@ -95,10 +113,19 @@ public class TwoServerSimQueue{
     } 
   }
   
+  /**
+   * Gets the amount of jobs on the system
+   * @return The number of jobs on the system
+   */
   public int getJobsInService(){
     return queueOne.size() + queueTwo.size();
   }
   
+  /**
+   * Runs the simulation. 
+   * @param coinFlip Policy for sending jobs to which servers. (See generateJob() for more informatio)
+   * @return The average number of jobs in the system during the system.
+   */
   public int runSimulation(boolean coinFlip){
     ArrayList<Integer> snapshots = new ArrayList<Integer>();
     int n = 0;

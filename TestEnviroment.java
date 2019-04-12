@@ -1,4 +1,9 @@
-public class TestEnviroment{
+/**
+ * Class that runs the simulation
+ * @author Kyler Kopacz and Connor Haugh
+ * @author https://github.com/KylerKopacz/queueing-simulator
+ */
+public class TestEnviroment {
   public static void main(String[] args) {
     
     // Parameters
@@ -6,8 +11,7 @@ public class TestEnviroment{
     SimQueue sim1;
     
     
-    for (expLambda=0.1; expLambda <0.7; expLambda = expLambda + 0.1){
-      //System.out.println("Lambda is : " + expLambda);
+    for (expLambda=0.1; expLambda <0.9; expLambda = expLambda + 0.1){
       sim1 = new SimQueue(1,1,0.5,expLambda);
       System.out.println("1, " + sim1.runSimulation()/expLambda + ", " + expLambda);
       sim1 = new SimQueue(1.904,0.096,0.952,expLambda);
@@ -21,8 +25,7 @@ public class TestEnviroment{
     TwoServerSimQueue sim2;
 
     System.out.println("\n\nStarting Two Server with coinflip");
-    for (expLambda=0.1; expLambda <0.7; expLambda= expLambda + 0.1){
-      //System.out.println("Lambda is : " + expLambda);
+    for (expLambda=0.1; expLambda <0.9; expLambda= expLambda + 0.1){
       sim2 = new TwoServerSimQueue(1,1,0.5,expLambda);
       System.out.println("1, " + sim2.runSimulation(true)/expLambda + ", " + expLambda);
       sim2 = new TwoServerSimQueue(1.904,0.096,0.952,expLambda);
@@ -34,7 +37,7 @@ public class TestEnviroment{
     }
 
     System.out.println("\n\nStarting Two Server with smaller queue size picking");
-    for (expLambda=0.1; expLambda <0.7; expLambda= expLambda + 0.1){
+    for (expLambda=0.1; expLambda <0.9; expLambda= expLambda + 0.1){
       //System.out.println("Lambda is : " + expLambda);
       sim2 = new TwoServerSimQueue(1,1,0.5,expLambda);
       System.out.println("1, " + sim2.runSimulation(false)/expLambda + ", " + expLambda);
